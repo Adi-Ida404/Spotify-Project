@@ -1,19 +1,57 @@
-
-
+import axios from 'axios';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios.post('http://localhost:9000/Login', { email, password })
+      .then(result => {
+        console.log(result);
+        if (result.data === "Success") {
+          navigate('/'); // Navigate to /home on successful login
+        } else {
+          console.log("Login failed");
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        console.log("An error occurred during login");
+      });
+  };
+
   return (
     <div style={styles.container}>
       <div style={styles.formContainer}>
-        <h2 style={styles.heading}><b></b>Login</h2>
-        <form>
+        <h2 style={styles.heading}><b>Login</b></h2>
+        <form onSubmit={handleSubmit}>
           <div style={styles.inputContainer}>
-            <label style={styles.label} htmlFor="username">Username:</label>
-            <input style={styles.input} type="text" id="username" name="username" required />
+            <label style={styles.label} htmlFor="email">Email:</label>
+            <input
+              onChange={(e) => setEmail(e.target.value)}
+              style={styles.input}
+              type="email"
+              id="email"
+              name="email"
+              required
+              autoComplete="off"
+            />
           </div>
           <div style={styles.inputContainer}>
             <label style={styles.label} htmlFor="password">Password:</label>
-            <input style={styles.input} type="password" id="password" name="password" required />
+            <input
+              onChange={(e) => setPassword(e.target.value)}
+              style={styles.input}
+              type="password"
+              id="password"
+              name="password"
+              required
+              autoComplete="off"
+            />
           </div>
           <button style={styles.button} type="submit"><b>Login</b></button>
         </form>
@@ -28,43 +66,49 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     height: '100vh',
-    backgroundColor: '#151515',
+    backgroundColor: '#020617',
   },
   formContainer: {
-    height:'60vh',
+    width: '40vw',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '60vh',
     borderRadius: '10%',
-    backgroundColor: 'black',
+    backgroundColor: '#020617',
     padding: '20px',
-    boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
   },
   heading: {
     textAlign: 'center',
     marginBottom: '20px',
     color: 'white',
+    fontSize: '50px',
+    fontWeight: 'bold',
   },
   inputContainer: {
     marginBottom: '15px',
   },
   label: {
+    textAlign: 'left',
     display: 'block',
     marginBottom: '5px',
     color: 'white',
   },
   input: {
-    backgroundColor: 'grey',
+    backgroundColor: '#1e2a3b',
+    color: 'white',
     width: '100%',
     padding: '8px',
     borderRadius: '4px',
-    border: '1px solid #ccc',
+    border: '1px solid #303f52',
   },
   button: {
     width: '100%',
     padding: '10px',
-    backgroundColor: '#1ed65e',
+    backgroundColor: 'white',
     color: 'black',
     border: 'none',
     borderRadius: '4px',
     cursor: 'pointer',
-    marginTop: '10px'
+    marginTop: '10px',
   },
 };

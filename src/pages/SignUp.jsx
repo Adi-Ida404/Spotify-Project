@@ -1,70 +1,120 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Correct import for v6
+import axios from 'axios';
 
 export const SignUp = () => {
+  const [email, setEmail] = useState('');
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // Initialize navigate for navigation
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios.post('http://localhost:9000/SignUp', { email, userName, password })
+      .then(result => {
+        console.log(result);
+        navigate('/Login'); // Redirect to /Login after successful sign up
+      })
+      .catch(err => console.error(err));
+  };
+
   return (
-    <div>
-        <div style={styles.container}>
+    <div style={styles.container}>
       <div style={styles.formContainer}>
         <h2 style={styles.heading}><b>Sign Up</b></h2>
-        <form>
+        <form onSubmit={handleSubmit}>
+          <div style={styles.inputContainer}>
+            <label style={styles.label} htmlFor="createemail">Email</label>
+            <input
+              onChange={(e) => setEmail(e.target.value)}
+              style={styles.input}
+              type="email"
+              id="createemail"
+              name="email"
+              required
+              autoComplete="off"
+            />
+          </div>
           <div style={styles.inputContainer}>
             <label style={styles.label} htmlFor="createusername">Create Username:</label>
-            <input style={styles.input} type="text" id="createusername" name="username" required />
+            <input
+              onChange={(e) => setUserName(e.target.value)}
+              style={styles.input}
+              type="text"
+              id="createusername"
+              name="username"
+              required
+              autoComplete="off"
+            />
           </div>
           <div style={styles.inputContainer}>
             <label style={styles.label} htmlFor="createpassword">Create Password:</label>
-            <input style={styles.input} type="password" id="createpassword" name="password" required />
+            <input
+              onChange={(e) => setPassword(e.target.value)}
+              style={styles.input}
+              type="password"
+              id="createpassword"
+              name="password"
+              required
+              autoComplete="off"
+            />
           </div>
           <button style={styles.button} type="submit"><b>Create Account</b></button>
         </form>
       </div>
     </div>
-    </div>
-  )
-}
-const styles = {
-    container: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh',
-      backgroundColor: '#151515',
-    },
-    formContainer: {
-      height:'60vh',
-      borderRadius: '10%',
-      backgroundColor: 'black',
-      padding: '20px',
-      boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-    },
-    heading: {
-      textAlign: 'center',
-      marginBottom: '20px',
-      color: 'white',
-    },
-    inputContainer: {
-      marginBottom: '15px',
-    },
-    label: {
-      display: 'block',
-      marginBottom: '5px',
-      color: 'white',
-    },
-    input: {
-      backgroundColor: 'grey',
-      width: '100%',
-      padding: '8px',
-      borderRadius: '4px',
-      border: '1px solid #ccc',
-    },
-    button: {
-      width: '100%',
-      padding: '10px',
-      backgroundColor: '#1ed65e',
-      color: 'black',
-      border: 'none',
-      borderRadius: '4px',
-      cursor: 'pointer',
-      marginTop: '10px'
-    },
-  };
+  );
+};
 
+const styles = {
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100vh',
+    backgroundColor: '#020617',
+  },
+  formContainer: {
+    width: '40vw',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '60vh',
+    borderRadius: '10%',
+    backgroundColor: '#020617',
+    padding: '20px',
+  },
+  heading: {
+    textAlign: 'center',
+    marginBottom: '20px',
+    color: 'white',
+    fontSize: '50px',
+    fontWeight: 'bold',
+  },
+  inputContainer: {
+    marginBottom: '15px',
+  },
+  label: {
+    textAlign: 'left',
+    display: 'block',
+    marginBottom: '5px',
+    color: 'white',
+  },
+  input: {
+    color: 'white',
+    backgroundColor: '#1e2a3b',
+    width: '100%',
+    padding: '8px',
+    borderRadius: '4px',
+    border: '1px solid #303f52',
+  },
+  button: {
+    width: '100%',
+    padding: '10px',
+    backgroundColor: 'White',
+    color: 'black',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    marginTop: '10px',
+  },
+};
